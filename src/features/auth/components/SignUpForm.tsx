@@ -3,6 +3,13 @@
 import type { AuthFormType } from '@/features/auth/types'
 
 import React from 'react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+
+import { registerSchema as schema } from '@/features/auth/schemas'
+import { signUp } from '@/features/auth/actions'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -15,20 +22,58 @@ interface Props {
 export const SignUpForm: React.FC<Props> = (props: Props) => {
   const { setVariant } = props
 
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  })
+
+  const handleFormSubmit = async (values: z.infer<typeof schema>) => {
+    try {
+      const formData = new FormData()
+      formData.append('name', values.name)
+      formData.append('email', values.email)
+      formData.append('password', values.password)
+
+      const result = await signUp(formData)
+
+      if (result.status === 'SUCCESS') {
+        form.reset()
+        toast.success('Account created successfully')
+        setVariant('sign-in')
+      } else {
+        toast.error(result.error)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error('An error occurred. Please try again.')
+    }
+  }
+
   return (
     <div className='space-y-5'>
-      <form className='space-y-3'>
+      <form
+        onSubmit={form.handleSubmit(handleFormSubmit)}
+        className='space-y-3'
+      >
         <div>
           <label htmlFor='name' className='font-bold text-sm text-gray-700'>
             Name
           </label>
           <Input
+            {...form.register('name')}
             type='text'
             id='name'
-            name='Name'
-            required
-            placeholder='name'
+            placeholder='Name'
           />
+          {form.formState.errors.name && (
+            <span className='text-xs text-destructive'>
+              {form.formState.errors.name.message}
+            </span>
+          )}
         </div>
 
         <div>
@@ -36,12 +81,16 @@ export const SignUpForm: React.FC<Props> = (props: Props) => {
             Email
           </label>
           <Input
+            {...form.register('email')}
             type='email'
             id='email'
-            name='email'
-            required
             placeholder='Email'
           />
+          {form.formState.errors.email && (
+            <span className='text-xs text-destructive'>
+              {form.formState.errors.email.message}
+            </span>
+          )}
         </div>
 
         <div>
@@ -49,15 +98,24 @@ export const SignUpForm: React.FC<Props> = (props: Props) => {
             Password
           </label>
           <Input
+            {...form.register('password')}
             type='password'
             id='password'
-            name='Password'
-            required
             placeholder='Password'
           />
+          {form.formState.errors.password && (
+            <span className='text-xs text-destructive'>
+              {form.formState.errors.password.message}
+            </span>
+          )}
         </div>
 
-        <Button variant='primary' className='w-full' type='submit'>
+        <Button
+          variant='primary'
+          className='w-full'
+          type='submit'
+          disabled={!form.formState.isDirty}
+        >
           Sign up
         </Button>
       </form>
