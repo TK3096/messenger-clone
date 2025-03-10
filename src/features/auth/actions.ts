@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/prisma'
-import bcrypt from 'bcrypt'
+import bcryptjs from 'bcryptjs'
 
 import { parseServerActionResponse } from '@/lib/utils'
 
@@ -33,7 +33,7 @@ export const signUp = async (data: FormData) => {
       })
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcryptjs.hash(password, 10)
 
     const user = await prisma.user.create({
       data: {

@@ -36,9 +36,10 @@ export const SignInForm: React.FC<Props> = (props: Props) => {
     try {
       setLoading(true)
 
-      const user = await signIn('credentials', { ...values, redirect: false })
-
-      console.log(user)
+      const user = await signIn('credentials', {
+        ...values,
+        redirectTo: '/users',
+      })
 
       if (user?.error) {
         toast.error('Invalid credentials')

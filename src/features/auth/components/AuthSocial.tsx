@@ -8,8 +8,8 @@ import { FaGithub } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 
 export const SocialAuth: React.FC = () => {
-  const handleSignIn = async () => {
-    await signIn('github')
+  const handleSignIn = () => {
+    signIn('github', { redirectTo: '/users' })
   }
 
   return (
