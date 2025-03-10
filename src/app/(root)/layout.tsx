@@ -1,5 +1,13 @@
+'use client'
+
+import { SessionProvider } from 'next-auth/react'
+
 const Layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  return <main className='h-screen'>{children}</main>
+  return (
+    <SessionProvider>
+      <main className='h-screen'>{children}</main>
+    </SessionProvider>
+  )
 }
 
 export default Layout
