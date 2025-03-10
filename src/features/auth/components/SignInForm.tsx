@@ -2,7 +2,14 @@
 
 import type { AuthFormType } from '@/features/auth/types'
 
-import React from 'react'
+import React, { useState } from 'react'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+import { signIn } from 'next-auth/react'
+
+import { loginSchema as schema } from '@/features/auth/schemas'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -15,20 +22,60 @@ interface Props {
 export const SignInForm: React.FC<Props> = (props: Props) => {
   const { setVariant } = props
 
+  const [loading, setLoading] = useState(false)
+
+  const form = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  })
+
+  const handleSubmitForm = async (values: z.infer<typeof schema>) => {
+    try {
+      setLoading(true)
+
+      const user = await signIn('credentials', { ...values, redirect: false })
+
+      console.log(user)
+
+      if (user?.error) {
+        toast.error('Invalid credentials')
+      }
+
+      if (user?.ok && !user.error) {
+        toast.success('Signed in successfully')
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error('An error occurred. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div className='space-y-5'>
-      <form className='space-y-3'>
+      <form
+        onSubmit={form.handleSubmit(handleSubmitForm)}
+        className='space-y-3'
+      >
         <div>
           <label htmlFor='email' className='font-bold text-sm text-gray-700'>
             Email
           </label>
           <Input
+            {...form.register('email')}
             type='email'
             id='email'
-            name='email'
-            required
             placeholder='Email'
           />
+          {form.formState.errors.email && (
+            <span className='text-xs text-destructive'>
+              {form.formState.errors.email.message}
+            </span>
+          )}
         </div>
 
         <div>
@@ -36,15 +83,24 @@ export const SignInForm: React.FC<Props> = (props: Props) => {
             Password
           </label>
           <Input
+            {...form.register('password')}
             type='password'
             id='password'
-            name='Password'
-            required
             placeholder='Password'
           />
+          {form.formState.errors.password && (
+            <span className='text-xs text-destructive'>
+              {form.formState.errors.password.message}
+            </span>
+          )}
         </div>
 
-        <Button variant='primary' className='w-full' type='submit'>
+        <Button
+          variant='primary'
+          className='w-full'
+          type='submit'
+          disabled={!form.formState.isDirty || loading}
+        >
           Sign in
         </Button>
       </form>

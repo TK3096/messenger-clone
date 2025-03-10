@@ -2,7 +2,7 @@
 
 import type { AuthFormType } from '@/features/auth/types'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -22,6 +22,8 @@ interface Props {
 export const SignUpForm: React.FC<Props> = (props: Props) => {
   const { setVariant } = props
 
+  const [loading, setLoading] = useState(false)
+
   const form = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -33,6 +35,8 @@ export const SignUpForm: React.FC<Props> = (props: Props) => {
 
   const handleFormSubmit = async (values: z.infer<typeof schema>) => {
     try {
+      setLoading(true)
+
       const formData = new FormData()
       formData.append('name', values.name)
       formData.append('email', values.email)
@@ -50,6 +54,8 @@ export const SignUpForm: React.FC<Props> = (props: Props) => {
     } catch (error) {
       console.log(error)
       toast.error('An error occurred. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -114,7 +120,7 @@ export const SignUpForm: React.FC<Props> = (props: Props) => {
           variant='primary'
           className='w-full'
           type='submit'
-          disabled={!form.formState.isDirty}
+          disabled={!form.formState.isDirty || loading}
         >
           Sign up
         </Button>
