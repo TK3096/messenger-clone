@@ -1,7 +1,9 @@
+import { EmptyState } from '@/components/common/EmptyState'
+
 const Page: React.FC = () => {
   return (
-    <div>
-      <h1>Users Page</h1>
+    <div className='h-full'>
+      <EmptyState />
     </div>
   )
 }

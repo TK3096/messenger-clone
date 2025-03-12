@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 
 import { PiSignOutBold } from 'react-icons/pi'
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/common/UserAvatar'
 import { DesktopSidebarItem } from '@/components/navigation/DesktopSidebarItem'
 
 import { menu } from '@/components/navigation/menu'
@@ -16,7 +16,7 @@ export const DesktopSidebar: React.FC = () => {
   const pathname = usePathname()
 
   return (
-    <aside className='hidden lg:block fixed h-full w-20 shadow-md'>
+    <aside className='hidden lg:block fixed h-full w-20 border-r-2 border-gray-100/20'>
       <div className='p-3 h-full flex flex-col items-center'>
         <div className='flex-1 w-full overflow-y-scroll'>
           {menu.map((item) => {
@@ -40,9 +40,7 @@ export const DesktopSidebar: React.FC = () => {
         </div>
 
         <div className='pt-3'>
-          <Avatar className='w-10 h-10'>
-            <AvatarFallback>TK</AvatarFallback>
-          </Avatar>
+          <UserAvatar />
         </div>
       </div>
     </aside>
