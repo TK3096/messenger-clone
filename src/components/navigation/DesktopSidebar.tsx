@@ -16,7 +16,7 @@ export const DesktopSidebar: React.FC = () => {
   const pathname = usePathname()
 
   return (
-    <aside className='hidden lg:block fixed h-full w-20 border-r-2 border-gray-100/20'>
+    <aside className='hidden lg:block fixed z-50 h-full w-20 border-r-2 border-gray-100/20'>
       <div className='p-3 h-full flex flex-col items-center'>
         <div className='flex-1 w-full overflow-y-scroll'>
           {menu.map((item) => {

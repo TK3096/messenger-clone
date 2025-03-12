@@ -1,7 +1,9 @@
+import { EmptyState } from '@/components/common/EmptyState'
+
 const Page: React.FC = () => {
   return (
-    <div>
-      <h1>Conversations Page</h1>
+    <div className='h-full hidden lg:block'>
+      <EmptyState />
     </div>
   )
 }

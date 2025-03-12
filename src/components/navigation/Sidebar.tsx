@@ -15,7 +15,7 @@ export const Sidebar: React.FC = () => {
   const pathname = usePathname()
 
   return (
-    <aside className='block lg:hidden fixed bottom-0 bg-gray-100/10 border-t-2 border-t-gray-100/20 left-0 w-full h-10'>
+    <aside className='block lg:hidden fixed z-50 bottom-0 bg-white border-t-2 border-t-gray-100/20 left-0 w-full h-10'>
       <div className='grid grid-cols-3 h-full'>
         {menu.map((item) => {
           const { href, icon: Icon } = item
