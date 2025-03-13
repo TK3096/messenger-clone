@@ -4,7 +4,9 @@ import { Conversationlist } from '@/features/conversation/components/Conversatio
 
 const Layout = async ({
   children,
-}: Readonly<{ children: React.ReactNode }>) => {
+}: Readonly<{
+  children: React.ReactNode
+}>) => {
   const { data: conversations } = await getConversations()
 
   return (

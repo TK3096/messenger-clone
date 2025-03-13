@@ -170,3 +170,39 @@ export const getConversations = async () => {
     })
   }
 }
+
+export const getConversationById = async (id: string) => {
+  try {
+    const session = await auth()
+
+    if (!session) {
+      return parseServerActionResponse({
+        status: 'ERROR',
+        data: null,
+        message: 'Unauthorized',
+      })
+    }
+
+    const conversation = await prisma.conversation.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        users: true,
+      },
+    })
+
+    return parseServerActionResponse({
+      status: 'SUCCESS',
+      data: conversation,
+    })
+  } catch (error) {
+    console.log(error)
+
+    return parseServerActionResponse({
+      status: 'ERROR',
+      data: null,
+      message: 'Failed to get conversation',
+    })
+  }
+}

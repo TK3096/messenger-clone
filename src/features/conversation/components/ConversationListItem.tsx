@@ -71,12 +71,12 @@ export const ConversationListItem: React.FC<Props> = (props: Props) => {
       <UserAvatar image={otherUser?.image || undefined} />
 
       <div className='space-y-1 w-full'>
-        <p className='font-medium text-sm'>{otherUser.name}</p>
+        <p className='font-medium text-sm truncate w-3/4'>{otherUser.name}</p>
 
         <div className='flex items-center justify-between w-full'>
           <p
             className={cn(
-              'text-sm truncate w-[170px]',
+              'text-sm truncate w-3/4 lg:w-[170px]',
               hasSeen ? 'text-gray-500' : 'text-black font-medium',
             )}
           >
