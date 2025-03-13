@@ -38,8 +38,7 @@ export const UserListItem: React.FC<Props> = (props: Props) => {
 
   return (
     <div
-      key={user.id}
-      className='rounded-sm p-2 flex items-center gap-2 hover:bg-gray-100/50 transition-colors cursor-pointer'
+      className='rounded-sm p-2 flex items-center gap-2 bg-white hover:bg-neutral-100 transition-colors cursor-pointer'
       onClick={handleClick}
     >
       <UserAvatar image={user.image!} />

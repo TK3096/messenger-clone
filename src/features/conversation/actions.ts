@@ -123,3 +123,50 @@ export const createConversation = async (payload: CreateConversation) => {
     })
   }
 }
+
+export const getConversations = async () => {
+  try {
+    const session = await auth()
+
+    if (!session) {
+      return parseServerActionResponse({
+        status: 'ERROR',
+        data: [],
+        message: 'Unauthorized',
+      })
+    }
+
+    const conversations = await prisma.conversation.findMany({
+      where: {
+        userIds: {
+          has: session.user?.id,
+        },
+      },
+      orderBy: {
+        lastMessageAt: 'desc',
+      },
+      include: {
+        users: true,
+        messages: {
+          include: {
+            sender: true,
+            seen: true,
+          },
+        },
+      },
+    })
+
+    return parseServerActionResponse({
+      status: 'SUCCESS',
+      data: conversations,
+    })
+  } catch (error) {
+    console.log(error)
+
+    return parseServerActionResponse({
+      status: 'ERROR',
+      data: [],
+      message: 'Failed to get conversations',
+    })
+  }
+}

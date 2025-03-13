@@ -12,7 +12,7 @@ export const UserList: React.FC<Props> = (props: Props) => {
   const { data } = props
 
   return (
-    <div className='px-4 py-2 h-full'>
+    <aside className='px-4 py-2 h-full'>
       <h1 className='font-bold text-lg'>People</h1>
 
       <div className='mt-3 space-y-3'>
@@ -20,6 +20,6 @@ export const UserList: React.FC<Props> = (props: Props) => {
           <UserListItem key={user.id} user={user} />
         ))}
       </div>
-    </div>
+    </aside>
   )
 }
