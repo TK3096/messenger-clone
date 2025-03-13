@@ -2,7 +2,7 @@ import type { User } from '@prisma/client'
 
 import React from 'react'
 
-import { UserAvatar } from '@/components/common/UserAvatar'
+import { UserListItem } from '@/features/user/components/UserListItem'
 
 interface Props {
   data: User[]
@@ -13,18 +13,11 @@ export const UserList: React.FC<Props> = (props: Props) => {
 
   return (
     <div className='px-4 py-2 h-full'>
-      <h1 className='font-bold text-lg'>Users</h1>
+      <h1 className='font-bold text-lg'>People</h1>
 
       <div className='mt-3 space-y-3'>
         {data.map((user) => (
-          <div
-            key={user.id}
-            className='rounded-sm p-2 flex items-center gap-2 hover:bg-gray-100/50 transition-colors cursor-pointer'
-          >
-            <UserAvatar image={user.image!} />
-
-            <p>{user.name}</p>
-          </div>
+          <UserListItem key={user.id} user={user} />
         ))}
       </div>
     </div>

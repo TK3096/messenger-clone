@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { FaRegUser } from 'react-icons/fa6'
+import { FaUserAlt } from 'react-icons/fa'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
@@ -16,11 +16,11 @@ export const UserAvatar: React.FC<Props> = (props: Props) => {
       <Avatar className='w-10 h-10'>
         <AvatarImage src={image} />
         <AvatarFallback>
-          <FaRegUser className='size-6 text-gray-600' />
+          <FaUserAlt className='size-6 text-white' />
         </AvatarFallback>
       </Avatar>
 
-      <div className='absolute top-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full'></div>
+      <div className='absolute -top-0.25 right-0 w-3 h-3 bg-green-400 rounded-full border-[1px] border-white'></div>
     </div>
   )
 }

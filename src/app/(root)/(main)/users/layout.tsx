@@ -5,7 +5,7 @@ import { UserList } from '@/features/user/components/UserList'
 const Layout = async ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
-  const users = await getUsers()
+  const { data: users } = await getUsers()
 
   return (
     <div className='h-full'>

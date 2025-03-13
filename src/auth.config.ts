@@ -38,4 +38,18 @@ export default {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token }) {
+      const existingUser = await getUserByEmail(token.email as string)
+
+      token.id = existingUser?.id
+
+      return token
+    },
+    async session({ session, token }) {
+      session.user.id = token.id as string
+
+      return session
+    },
+  },
 } satisfies NextAuthConfig
