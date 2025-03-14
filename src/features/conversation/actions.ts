@@ -189,6 +189,12 @@ export const getConversationById = async (id: string) => {
       },
       include: {
         users: true,
+        messages: {
+          include: {
+            sender: true,
+            seen: true,
+          },
+        },
       },
     })
 

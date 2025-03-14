@@ -3,6 +3,8 @@ import { getMessages } from '@/features/message/actions'
 
 import { EmptyState } from '@/components/common/EmptyState'
 import { ChatHeader } from '@/features/conversation/components/ChatHeader'
+import { ChatBox } from '@/features/conversation/components/ChatBox'
+import { ChatForm } from '@/features/conversation/components/ChatForm'
 
 const Page = async ({
   params,
@@ -25,7 +27,9 @@ const Page = async ({
   return (
     <div className='h-full'>
       <div className='h-full flex flex-col'>
-        <ChatHeader />
+        <ChatHeader conversation={conversation} />
+        <ChatBox initialMessages={messages} conversationId={conversation.id} />
+        <ChatForm conversationId={conversation.id} />
       </div>
     </div>
   )
