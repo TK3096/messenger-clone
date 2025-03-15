@@ -9,6 +9,7 @@ import { PiSignOutBold } from 'react-icons/pi'
 
 import { UserAvatar } from '@/components/common/UserAvatar'
 import { DesktopSidebarItem } from '@/components/navigation/DesktopSidebarItem'
+import { EditProfileModal } from '@/features/user/components/EditProfileModal'
 
 import { menu } from '@/components/navigation/menu'
 
@@ -40,7 +41,11 @@ export const DesktopSidebar: React.FC = () => {
         </div>
 
         <div className='pt-3'>
-          <UserAvatar />
+          <EditProfileModal>
+            <div role='button' className='cursor-pointer'>
+              <UserAvatar />
+            </div>
+          </EditProfileModal>
         </div>
       </div>
     </aside>

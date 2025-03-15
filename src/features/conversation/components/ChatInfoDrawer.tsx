@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/sheet'
 import { UserAvatar } from '@/components/common/UserAvatar'
 import { Button } from '@/components/ui/button'
+import { DeleteModal } from '@/features/conversation/components/DeleteModal'
 
 import { formatDate } from '@/lib/utils'
 
@@ -65,14 +66,16 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
           </SheetTitle>
           <SheetDescription asChild className='mt-4'>
             <div className='flex flex-col items-center gap-3'>
-              <Button
-                variant='secondary'
-                size='icon'
-                className='rounded-full'
-                onClick={handleDelete}
-              >
-                <FaTrashAlt />
-              </Button>
+              <DeleteModal conversationId={conversation.id}>
+                <Button
+                  variant='secondary'
+                  size='icon'
+                  className='rounded-full'
+                  onClick={handleDelete}
+                >
+                  <FaTrashAlt />
+                </Button>
+              </DeleteModal>
               <p className='font-semibold'>Delete</p>
             </div>
           </SheetDescription>
