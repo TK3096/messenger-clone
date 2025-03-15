@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 import { updateUserSchema as schema } from '@/features/user/schemas'
 
@@ -16,7 +17,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   DialogClose,
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -24,12 +24,15 @@ import { Button } from '@/components/ui/button'
 import { UserAvatar } from '@/components/common/UserAvatar'
 
 interface Props {
-  children: React.ReactNode
-  user?: User
+  user: User | null
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export const EditProfileModal: React.FC<Props> = (props: Props) => {
-  const { children, user } = props
+  const { user, open, setOpen } = props
+
+  const router = useRouter()
 
   const [loading, setLoading] = useState(false)
 
@@ -37,45 +40,48 @@ export const EditProfileModal: React.FC<Props> = (props: Props) => {
     resolver: zodResolver(schema),
     defaultValues: {
       name: user?.name || '',
-      image: user?.image || '',
+      // image: user?.image || '', // enbale this line if you can find a free storage for image
     },
   })
   const isDirty = form.formState.isDirty
 
   const image = form.watch('image')
 
-  const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+  // enbale this line if you can find a free storage for image
+  // const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0]
 
-    if (file) {
-      const reader = new FileReader()
+  //   if (file) {
+  //     const reader = new FileReader()
 
-      reader.onload = async (e) => {
-        const image = e.target?.result as string
+  //     reader.onload = async (e) => {
+  //       const image = e.target?.result as string
 
-        form.setValue('image', image, { shouldDirty: true })
-      }
+  //       form.setValue('image', image, { shouldDirty: true })
+  //     }
 
-      reader.readAsDataURL(file)
-    }
-  }
+  //     reader.readAsDataURL(file)
+  //   }
+  // }
 
   const handleFormSubmit = async (values: z.infer<typeof schema>) => {
     try {
       setLoading(true)
 
-      // const res = await fetch('/api/user', {
-      //   method: 'PATCH',
-      //   body: JSON.stringify(values),
-      // })
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        body: JSON.stringify(values),
+      })
 
-      // if (!res.ok) {
-      //   toast.error('Failed to update profile.')
+      if (!res.ok) {
+        toast.error('Failed to update profile.')
 
-      //   return
-      // }
+        return
+      }
 
       toast.success('Profile updated successfully.')
+      setOpen(false)
+      router.refresh()
     } catch (error) {
       console.error(error)
       toast.error('Failed to update profile.')
@@ -93,8 +99,7 @@ export const EditProfileModal: React.FC<Props> = (props: Props) => {
   }, [user])
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Profile</DialogTitle>
@@ -115,7 +120,8 @@ export const EditProfileModal: React.FC<Props> = (props: Props) => {
               />
             </div>
 
-            <div>
+            {/* enbale this line if you can find a free storage for image */}
+            {/* <div>
               <p className='font-semibold'>Picture</p>
               <div className='mt-1'>
                 <label htmlFor='image' className='cursor-pointer'>
@@ -128,7 +134,7 @@ export const EditProfileModal: React.FC<Props> = (props: Props) => {
                   onChange={handleUpload}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className='flex justify-end gap-3 mt-6'>
