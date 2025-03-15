@@ -1,3 +1,5 @@
+'use client'
+
 import type { FullConversation } from '@/features/conversation/types'
 
 import React, { useMemo } from 'react'
@@ -45,6 +47,8 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
     return 'Active'
   }, [conversation])
 
+  const handleDelete = () => {}
+
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -61,7 +65,12 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
           </SheetTitle>
           <SheetDescription asChild className='mt-4'>
             <div className='flex flex-col items-center gap-3'>
-              <Button variant='secondary' size='icon' className='rounded-full'>
+              <Button
+                variant='secondary'
+                size='icon'
+                className='rounded-full'
+                onClick={handleDelete}
+              >
                 <FaTrashAlt />
               </Button>
               <p className='font-semibold'>Delete</p>
