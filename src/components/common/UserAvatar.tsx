@@ -16,7 +16,7 @@ export const UserAvatar: React.FC<Props> = (props: Props) => {
     <div className='relative w-fit'>
       <Avatar className='w-10 h-10'>
         <AvatarImage src={image} />
-        <AvatarFallback>
+        <AvatarFallback className='bg-gray-200'>
           <FaUserAlt className='size-6 text-white' />
         </AvatarFallback>
       </Avatar>

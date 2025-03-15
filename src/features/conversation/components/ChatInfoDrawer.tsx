@@ -58,7 +58,7 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
           <SheetTitle asChild>
             <div className='flex flex-col items-center gap-3'>
               <UserAvatar image={otherUser.image!} />
-              <div>
+              <div className='text-center'>
                 <h3>{title}</h3>
                 <p className='text-xs font-light'>{statusText}</p>
               </div>
@@ -94,6 +94,14 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
               <div className='space-y-1 pt-4'>
                 <h4 className='font-semibold'>Joined</h4>
                 <p>{joinedDate}</p>
+              </div>
+            </>
+          )}
+          {conversation.isGroup && (
+            <>
+              <div className='space-y-1 pb-4'>
+                <h4 className='font-semibold'>Emails</h4>
+                {conversation.users.map((user) => user.email).join(', ')}
               </div>
             </>
           )}

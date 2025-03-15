@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import { useOtherUser } from '@/features/conversation/hooks/useOtherUser'
 
 import { UserAvatar } from '@/components/common/UserAvatar'
+import { GroupAvatar } from '@/components/common/GroupAvatar'
 
 import { cn, formatDate } from '@/lib/utils'
 
@@ -68,10 +69,13 @@ export const ConversationListItem: React.FC<Props> = (props: Props) => {
         select ? 'bg-neutral-100' : 'bg-white',
       )}
     >
-      <UserAvatar image={otherUser?.image || undefined} />
+      {!data.isGroup && <UserAvatar image={otherUser?.image || undefined} />}
+      {data.isGroup && <GroupAvatar name={data.name!} />}
 
       <div className='space-y-1 w-full'>
-        <p className='font-medium text-sm truncate w-3/4'>{otherUser.name}</p>
+        <p className='font-medium text-sm truncate w-3/4'>
+          {data.name || otherUser.name}
+        </p>
 
         <div className='flex items-center justify-between w-full'>
           <p
