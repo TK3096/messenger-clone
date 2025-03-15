@@ -6,10 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Props {
   image?: string
+  hideStatus?: boolean
 }
 
 export const UserAvatar: React.FC<Props> = (props: Props) => {
-  const { image } = props
+  const { image, hideStatus } = props
 
   return (
     <div className='relative w-fit'>
@@ -20,7 +21,9 @@ export const UserAvatar: React.FC<Props> = (props: Props) => {
         </AvatarFallback>
       </Avatar>
 
-      <div className='absolute -top-0.25 right-0 w-3 h-3 bg-green-400 rounded-full border-[1px] border-white'></div>
+      {!hideStatus && (
+        <div className='absolute -top-0.25 right-0 w-3 h-3 bg-green-400 rounded-full border-[1px] border-white'></div>
+      )}
     </div>
   )
 }

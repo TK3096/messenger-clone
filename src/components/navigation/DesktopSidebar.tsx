@@ -1,9 +1,10 @@
 'use client'
 
-import React from 'react'
+import React, { useMemo } from 'react'
 import Link from 'next/link'
 import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 import { PiSignOutBold } from 'react-icons/pi'
 
@@ -15,6 +16,11 @@ import { menu } from '@/components/navigation/menu'
 
 export const DesktopSidebar: React.FC = () => {
   const pathname = usePathname()
+  const { data: session } = useSession()
+
+  const user = useMemo(() => {
+    return session?.user
+  }, [session?.user])
 
   return (
     <aside className='hidden lg:block fixed z-50 h-full w-20 border-r-2 border-gray-100/20'>
@@ -41,9 +47,9 @@ export const DesktopSidebar: React.FC = () => {
         </div>
 
         <div className='pt-3'>
-          <EditProfileModal>
+          <EditProfileModal user={user}>
             <div role='button' className='cursor-pointer'>
-              <UserAvatar />
+              <UserAvatar image={user?.image || ''} />
             </div>
           </EditProfileModal>
         </div>
