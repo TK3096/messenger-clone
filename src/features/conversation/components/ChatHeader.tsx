@@ -12,6 +12,7 @@ import { useOtherUser } from '@/features/conversation/hooks/useOtherUser'
 
 import { UserAvatar } from '@/components/common/UserAvatar'
 import { Button } from '@/components/ui/button'
+import { ChatInfoDrawer } from '@/features/conversation/components/ChatInfoDrawer'
 
 interface Props {
   conversation: FullConversation
@@ -56,9 +57,11 @@ export const ChatHeader: React.FC<Props> = (props: Props) => {
         </div>
       </div>
 
-      <Button variant='ghost' size='icon'>
-        <BsThreeDots className='size-6 text-fb' />
-      </Button>
+      <ChatInfoDrawer conversation={conversation}>
+        <Button variant='ghost' size='icon'>
+          <BsThreeDots className='size-6 text-fb' />
+        </Button>
+      </ChatInfoDrawer>
     </div>
   )
 }
