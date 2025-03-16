@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/prisma'
 import { auth } from '@/auth'
+import { pusherServer } from '@/lib/pusher'
 
 export const DELETE = async (
   req: Request,
@@ -26,6 +27,16 @@ export const DELETE = async (
     if (!existingConversation) {
       return new NextResponse('Not Found conversation', { status: 404 })
     }
+
+    existingConversation.users.forEach((user) => {
+      if (user.email) {
+        pusherServer.trigger(
+          user.email,
+          'conversation:remove',
+          existingConversation,
+        )
+      }
+    })
 
     const deletedConversation = await prisma.conversation.deleteMany({
       where: {

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 
 import { auth } from '@/auth'
 import { prisma } from '@/prisma'
+import { pusherServer } from '@/lib/pusher'
 
 export const POST = async (
   req: Request,
@@ -59,6 +60,21 @@ export const POST = async (
         seen: true,
       },
     })
+
+    await pusherServer.trigger(
+      session.user?.email as string,
+      'conversation:update',
+      {
+        id: conversationId,
+        messages: [updatedMessage],
+      },
+    )
+
+    if (lastMessage.seenIds.indexOf(session.user?.id as string) !== -1) {
+      return NextResponse.json(conversation)
+    }
+
+    await pusherServer.trigger(conversationId, 'message:update', updatedMessage)
 
     return NextResponse.json(updatedMessage)
   } catch (error) {

@@ -6,6 +6,7 @@ import { prisma } from '@/prisma'
 import { auth } from '@/auth'
 
 import { parseServerActionResponse } from '@/lib/utils'
+import { pusherServer } from '@/lib/pusher'
 
 export const createConversation = async (payload: CreateConversation) => {
   try {
@@ -49,6 +50,16 @@ export const createConversation = async (payload: CreateConversation) => {
         include: {
           users: true,
         },
+      })
+
+      newGroupConversation.users.forEach((user) => {
+        if (user.email) {
+          pusherServer.trigger(
+            user.email,
+            'conversation:new',
+            newGroupConversation,
+          )
+        }
       })
 
       return parseServerActionResponse({
@@ -107,6 +118,12 @@ export const createConversation = async (payload: CreateConversation) => {
       include: {
         users: true,
       },
+    })
+
+    newConversation.users.forEach((user) => {
+      if (user.email) {
+        pusherServer.trigger(user.email, 'conversation:new', newConversation)
+      }
     })
 
     return parseServerActionResponse({

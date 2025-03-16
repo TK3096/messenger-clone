@@ -74,7 +74,7 @@ export const ConversationListItem: React.FC<Props> = (props: Props) => {
 
       <div className='space-y-1 w-full'>
         <p className='font-medium text-sm truncate w-3/4'>
-          {data.name || otherUser.name}
+          {data.name || otherUser?.name}
         </p>
 
         <div className='flex items-center justify-between w-full'>
