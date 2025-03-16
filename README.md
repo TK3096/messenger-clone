@@ -5,11 +5,15 @@ source: https://www.youtube.com/watch?v=PGPGcKBpAk8
 ### Tech Stack
 
 - Nextjs version 15
-- Authjs version beta
+- Authjs version beta (5)
 - Prisma
 - Mongo DB
+- Pusher
 
 ### Features
+
+- real-time chat with 1-1 and group conversation
+- real-time user active status
 
 ### Notes
 
