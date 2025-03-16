@@ -35,7 +35,7 @@ export const DesktopSidebar: React.FC = () => {
               return (
                 <Link href={href} key={href}>
                   <DesktopSidebarItem
-                    selected={pathname.includes(href)}
+                    selected={pathname?.includes(href)}
                     icon={<Icon className='size-6 text-gray-500' />}
                   />
                 </Link>
@@ -55,7 +55,7 @@ export const DesktopSidebar: React.FC = () => {
               className='cursor-pointer'
               onClick={() => setOpen(true)}
             >
-              <UserAvatar image={user?.image || ''} />
+              <UserAvatar image={user?.image || ''} userId={user?.id || ''} />
             </div>
           </div>
         </div>

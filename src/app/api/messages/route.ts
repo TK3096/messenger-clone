@@ -1,8 +1,8 @@
 import type { CreateMessage } from '@/features/message/types'
 
 import { NextResponse } from 'next/server'
-import { auth } from '@/auth'
 import { prisma } from '@/prisma'
+import { auth } from '@/auth'
 import { pusherServer } from '@/lib/pusher'
 
 export const POST = async (req: Request) => {

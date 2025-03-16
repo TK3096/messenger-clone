@@ -6,6 +6,7 @@ import React, { useMemo } from 'react'
 
 import { FaTrashAlt } from 'react-icons/fa'
 
+import { useActiveList } from '@/features/user/hooks/useAcitveList'
 import { useOtherUser } from '@/features/conversation/hooks/useOtherUser'
 
 import {
@@ -17,6 +18,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { UserAvatar } from '@/components/common/UserAvatar'
+import { GroupAvatar } from '@/components/common/GroupAvatar'
 import { Button } from '@/components/ui/button'
 import { DeleteModal } from '@/features/conversation/components/DeleteModal'
 
@@ -31,6 +33,7 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
   const { children, conversation } = props
 
   const otherUser = useOtherUser(conversation)
+  const { members } = useActiveList()
 
   const joinedDate = useMemo(() => {
     return formatDate(conversation.createdAt, 'MMMM DD, YYYY')
@@ -45,10 +48,10 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
       return `${conversation.users.length} members`
     }
 
-    return 'Active'
-  }, [conversation])
+    const isActive = members.indexOf(otherUser.id) !== -1
 
-  const handleDelete = () => {}
+    return isActive ? 'Active' : 'Offline'
+  }, [conversation, members, otherUser])
 
   return (
     <Sheet>
@@ -57,7 +60,12 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
         <SheetHeader>
           <SheetTitle asChild>
             <div className='flex flex-col items-center gap-3'>
-              <UserAvatar image={otherUser.image!} />
+              {conversation.isGroup && (
+                <GroupAvatar name={conversation.name!} />
+              )}
+              {!conversation.isGroup && (
+                <UserAvatar image={otherUser.image!} userId={otherUser.id} />
+              )}
               <div className='text-center'>
                 <h3>{title}</h3>
                 <p className='text-xs font-light'>{statusText}</p>
@@ -71,7 +79,6 @@ export const ChatInfoDrawer: React.FC<Props> = (props: Props) => {
                   variant='secondary'
                   size='icon'
                   className='rounded-full'
-                  onClick={handleDelete}
                 >
                   <FaTrashAlt />
                 </Button>

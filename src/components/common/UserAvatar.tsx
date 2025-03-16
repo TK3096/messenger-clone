@@ -2,15 +2,21 @@ import React from 'react'
 
 import { FaUserAlt } from 'react-icons/fa'
 
+import { useActiveList } from '@/features/user/hooks/useAcitveList'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface Props {
+  userId?: string
   image?: string
   hideStatus?: boolean
 }
 
 export const UserAvatar: React.FC<Props> = (props: Props) => {
-  const { image, hideStatus } = props
+  const { image, hideStatus, userId } = props
+
+  const { members } = useActiveList()
+  const isActive = members.indexOf(userId!) !== -1
 
   return (
     <div className='relative w-fit'>
@@ -21,7 +27,7 @@ export const UserAvatar: React.FC<Props> = (props: Props) => {
         </AvatarFallback>
       </Avatar>
 
-      {!hideStatus && (
+      {!hideStatus && isActive && (
         <div className='absolute -top-0.25 right-0 w-3 h-3 bg-green-400 rounded-full border-[1px] border-white'></div>
       )}
     </div>

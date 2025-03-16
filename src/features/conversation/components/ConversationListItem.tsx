@@ -69,7 +69,12 @@ export const ConversationListItem: React.FC<Props> = (props: Props) => {
         select ? 'bg-neutral-100' : 'bg-white',
       )}
     >
-      {!data.isGroup && <UserAvatar image={otherUser?.image || undefined} />}
+      {!data.isGroup && (
+        <UserAvatar
+          image={otherUser?.image || undefined}
+          userId={otherUser.id}
+        />
+      )}
       {data.isGroup && <GroupAvatar name={data.name!} />}
 
       <div className='space-y-1 w-full'>
